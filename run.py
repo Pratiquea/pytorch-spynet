@@ -9,6 +9,7 @@ import os
 import PIL
 import PIL.Image
 import sys
+import cv2
 
 ##########################################################
 
@@ -160,8 +161,18 @@ def estimate(tensorFirst, tensorSecond):
 ##########################################################
 
 if __name__ == '__main__':
-	tensorFirst = torch.FloatTensor(numpy.array(PIL.Image.open(arguments_strFirst))[:, :, ::-1].transpose(2, 0, 1).astype(numpy.float32) * (1.0 / 255.0))
-	tensorSecond = torch.FloatTensor(numpy.array(PIL.Image.open(arguments_strSecond))[:, :, ::-1].transpose(2, 0, 1).astype(numpy.float32) * (1.0 / 255.0))
+	im1 = PIL.Image.open(arguments_strFirst)
+	im1 = numpy.array(im1)
+	im1 = im1[...,[2,1,0]].copy()
+	im1 = cv2.resize(im1,(1024,416), interpolation = cv2.INTER_AREA)
+
+	im2 = PIL.Image.open(arguments_strSecond)
+	im2 = numpy.array(im2)
+	im2 = im2[...,[2,1,0]].copy()
+	im2 = cv2.resize(im2,(1024,416), interpolation = cv2.INTER_AREA)	
+
+	tensorFirst = torch.FloatTensor(numpy.array(im1)[:, :, ::-1].transpose(2, 0, 1).astype(numpy.float32) * (1.0 / 255.0))
+	tensorSecond = torch.FloatTensor(numpy.array(im2)[:, :, ::-1].transpose(2, 0, 1).astype(numpy.float32) * (1.0 / 255.0))
 
 	tensorOutput = estimate(tensorFirst, tensorSecond)
 
