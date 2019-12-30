@@ -21,6 +21,16 @@ To run it on your own pair of images, use the following command. You can choose 
 python run.py --model sintel-final --first ./images/first.png --second ./images/second.png --out ./out.flo
 ```
 
+```
+python run.py --model sintel-final --first ../VID_20191225_170802/frame0077.jpg --second ../VID_20191225_170802/frame0080.jpg --out ./out.flo
+```
+
+## To view the flow in image form run
+```
+python compute_flow.py --flowfile out.flo --write True
+```
+
+
 I am afraid that I cannot guarantee that this reimplementation is correct. However, it produced results identical to the implementation of the original authors in the examples that I tried. Please feel free to contribute to this repository by submitting issues and pull requests.
 
 ## comparison
